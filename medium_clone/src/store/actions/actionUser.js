@@ -59,3 +59,24 @@ export const doSignOut = () => {
         type: "LOGOUT_SUCCESS",
     };
 };
+
+export const getUser = () => {
+    return async(dispatch, getState) => {
+        const token = localStorage.getItem("token");
+        await axios
+            .get("http://0.0.0.0:5000/user", {
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    Accept: "application/json; charset=utf-8",
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(async(response) => {
+                await dispatch({ type: "GET_USER_DATA", payload: response.data });
+                console.warn("get user data", response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+};

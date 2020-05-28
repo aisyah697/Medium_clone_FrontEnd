@@ -12,9 +12,8 @@ import Col from "react-bootstrap/Col";
 const Navigation = (props) => {
   return (
     <div>
-      <Navbar collapseOnSelect expand="lg" className="navbar">
+      <Navbar collapseOnSelect expand="lg" className="main-navbar">
         <Navbar.Brand
-          href="#home"
           style={{
             fontFamily: "Georgia, Times New Roman, Times, serif",
             fontWeight: "bold",
@@ -22,23 +21,47 @@ const Navigation = (props) => {
             color: "black",
           }}
         >
-          Medium
+          <Link className="link-to" to="/home">
+            Medium
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse
           id="responsive-navbar-nav"
-          className="navbar-menu justify-content-end"
+          className="navbar-main-menu justify-content-end"
         >
           <Nav.Link className="navbar-menu" href="#home">
-            <img src={require("../assets/search.png")}></img>
+            <img
+              className="navbar-menu-icon"
+              src={require("../assets/search.png")}
+            ></img>
           </Nav.Link>
           <Nav.Link className="navbar-menu" href="#features">
-            <img src={require("../assets/ribbon.png")}></img>
+            <img
+              className="navbar-menu-icon"
+              src={require("../assets/ribbon.png")}
+            ></img>
           </Nav.Link>
-
-          <Button className="btn-get-started" variant="success">
+          <Nav.Link className="navbar-menu" href="#features">
+            <img
+              className="navbar-menu-icon"
+              src={require("../assets/bell.png")}
+            ></img>
+          </Nav.Link>
+          <Button className="btn-upgrade" variant="success">
             Upgrade
           </Button>
+          <Link to="/new-story">
+            <Button className="btn-upgrade" variant="success">
+              New Story
+            </Button>
+          </Link>
+          <Nav.Link className="navbar-menu" href="#features">
+            <img
+              className="navbar-menu-user"
+              src={require("../assets/user.jpg")}
+            ></img>
+          </Nav.Link>
         </Navbar.Collapse>
       </Navbar>
     </div>

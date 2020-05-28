@@ -29,6 +29,14 @@ export default function userReducer(userState = initialState, action) {
             };
         case "REGISTER_SUCCESS":
             return userState;
+        case "GET_USER_DATA":
+            return {
+                ...userState,
+                userData: action.payload,
+                full_name: action.payload.full_name,
+                avatar: action.payload.avatar,
+                bio: action.payload.bio,
+            }
         default:
             return userState;
     }
