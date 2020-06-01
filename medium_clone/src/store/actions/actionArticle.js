@@ -5,7 +5,6 @@ export const allArticles = () => {
         axios
             .get("http://0.0.0.0:5000/article/list")
             .then((response) => {
-                console.warn("check all article action", response);
                 dispatch({
                     type: "GET_ALL_ARTICLES",
                     payload: response.data,
@@ -87,12 +86,22 @@ export const changeInputArticle = (e) => {
     };
 };
 
+export const fileSelectedHandler = (e) => {
+    return {
+        type: "CHANGE_INPUT_FILE",
+        payload: e,
+    };
+};
+
 export const postArticle = () => {
     return async(dispatch, getState) => {
+        const token = localStorage.getItem("token");
+
         const inputData = new FormData();
         inputData.append("title", getState().article.title);
         inputData.append("createdAt", getState().article.created_at);
         inputData.append("updatedAt", getState().article.updated_at);
+        inputData.append("image", getState().article.image);
         inputData.append("imageCaption", getState().article.image_caption);
         inputData.append("text", getState().article.text);
 
@@ -102,29 +111,27 @@ export const postArticle = () => {
             data: inputData,
             headers: {
                 "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${getState().user.token}`,
+                Authorization: `Bearer ${token}`,
             },
         });
     };
 };
 
-export const getArticlebyUser = (e) => {
-    return async(dispatch) => {
+export const getArticleByUser = (e) => {
+    return async(dispatch, getState) => {
         const token = localStorage.getItem("token");
-        await axios
-            .get("http://0.0.0.0:5000/article/user", {
+
+        try {
+            const response = await axios.get("http://0.0.0.0:5000/article/user", {
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
                     Accept: "application/json; charset=utf-8",
                     Authorization: `Bearer ${token}`,
                 },
-            })
-            .then(async(response) => {
-                dispatch({ type: "GET_USER_ARTICLE", payload: response.data });
-                console.warn("get article by user", response.data);
-            })
-            .catch((error) => {
-                console.log(error);
             });
+            await dispatch({ type: "GET_USER_ARTICLE", payload: response.data });
+        } catch (error) {
+            console.log(error);
+        }
     };
 };

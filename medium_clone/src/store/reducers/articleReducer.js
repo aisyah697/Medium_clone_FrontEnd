@@ -48,6 +48,11 @@ export default function articleReducer(
                 ...articleState,
                 [action.payload.target.name]: action.payload.target.value,
             };
+        case "CHANGE_INPUT_FILE":
+            return {
+                ...articleState,
+                [action.payload.target.name]: action.payload.target.files[0],
+            };
         case "POST_ARTICLE_SUCCESS":
             return {
                 ...articleState,
@@ -56,7 +61,7 @@ export default function articleReducer(
         case "GET_USER_ARTICLE":
             return {
                 ...articleState,
-                statusError: false,
+                articleByUser: action.payload,
             };
         case "IS_LOADING":
             return {

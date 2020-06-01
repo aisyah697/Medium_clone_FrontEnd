@@ -2,7 +2,7 @@ import React, { Fragment, Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { doLogin } from "../store/actions/actionUser";
+import { doLogin, getUser, doSignOut } from "../store/actions/actionUser";
 import {
   allArticles,
   topArticle,
@@ -17,11 +17,9 @@ import PopularArticle from "../components/PopularArticle";
 import LatestArticle from "../components/LatestArticle";
 import EditorsPicks from "../components/EditorsPicks";
 import Nav from "react-bootstrap/Nav";
-import Carousel from "react-bootstrap/Carousel";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 
 class Home extends Component {
   componentDidMount() {
@@ -29,6 +27,7 @@ class Home extends Component {
     this.props.topArticle();
     this.props.editorsPicks();
     this.props.popularArticle();
+    this.props.getUser();
   }
 
   changeRouter = (articleTitle) => {
@@ -42,21 +41,25 @@ class Home extends Component {
   };
 
   render() {
-    console.log("cek props ini", this);
-
     const listArticle = this.props.dataArticle.articleList.slice(0, 3);
     const latestArticle = this.props.dataArticle.articleList;
     const topArticle = this.props.dataArticle.topArticle.slice(0, 1);
     const editorsPicks = this.props.dataArticle.editorsPicks.slice(0, 1);
     const popularArticle = this.props.dataArticle.popularArticle.slice(0, 4);
 
-    const is_login = this.props.dataUser.is_login;
+    const is_login = localStorage.getItem("token");
 
     return (
       <div>
         {is_login ? (
           <Fragment>
-            <Navigation {...this.props} />
+            <Navigation
+              {...this.props}
+              name={this.props.dataUser.full_name}
+              avatar={this.props.dataUser.avatar}
+              email={this.props.dataUser.email}
+            />
+            {/* <TopicCarousel {...this.props} /> */}
             <Nav
               className="main-navbar justify-content-center"
               activeKey="/home"
@@ -184,7 +187,7 @@ class Home extends Component {
                 </Col>
 
                 <Col sm={4} className="pl-0">
-                  <Container className="pl-0">
+                  <Container className="sticky-sidebar pl-0 pt-1">
                     <Link
                       className="popular-on-medium"
                       onClick={() => this.changeRouter(`${this.props.title}`)}
@@ -194,16 +197,47 @@ class Home extends Component {
                       </h5>
                     </Link>
                     <hr />
-                    {popularArticle.map((value, index) => (
-                      <PopularArticle
-                        {...this.props}
-                        title={value.title}
-                        text={value.text}
-                        date={value.created_at}
-                        full_name={value.user.full_name}
-                        index={index + 1}
-                      />
-                    ))}
+                    <div>
+                      {popularArticle.map((value, index) => (
+                        <PopularArticle
+                          {...this.props}
+                          title={value.title}
+                          text={value.text}
+                          date={value.created_at}
+                          full_name={value.user.full_name}
+                          index={index + 1}
+                        />
+                      ))}
+                    </div>
+                    <footer className="container-sticky-footer">
+                      <div className="sticky-footer">
+                        <Link className="sticky-footer-text" to="/home">
+                          Help
+                        </Link>
+                        <Link className="sticky-footer-text" to="/home">
+                          Status
+                        </Link>
+                        <Link className="sticky-footer-text" to="/home">
+                          Writers
+                        </Link>
+                        <Link className="sticky-footer-text" to="/home">
+                          Blog
+                        </Link>
+                        <Link className="sticky-footer-text" to="/home">
+                          Careers
+                        </Link>
+                        <br />
+                        <Link className="sticky-footer-text" to="/home">
+                          Privacy
+                        </Link>
+                        <Link className="sticky-footer-text" to="/home">
+                          Terms
+                        </Link>
+                        <Link className="sticky-footer-text" to="/home">
+                          About
+                        </Link>
+                      </div>
+                    </footer>
                   </Container>
                 </Col>
               </Row>
@@ -229,6 +263,8 @@ const mapDispatchToProps = {
   editorsPicks,
   popularArticle,
   articleTopic,
+  getUser,
+  doSignOut,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

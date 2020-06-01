@@ -1,8 +1,8 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import MainRoutes from "./routes/MainRoutes";
 import "../src/style/css/style.css";
+import "../src/style/js/script";
 
 function App() {
   return (

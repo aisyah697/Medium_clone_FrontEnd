@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import NavLandingPage from "../components/NavLandingPage";
 import Jumbotron from "react-bootstrap/Jumbotron";
@@ -8,6 +8,7 @@ import {
   changeInputPassword,
   doLogin,
   doRegister,
+  doSignOut,
 } from "../store/actions/actionUser";
 
 class LandingPage extends Component {
@@ -45,6 +46,7 @@ const mapDispatchToProps = {
   changeInputPassword,
   doLogin,
   doRegister,
+  doSignOut,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

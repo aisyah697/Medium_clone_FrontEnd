@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { doLogin } from "../store/actions/actionUser";
 import Navigation from "../components/Navigation";
 import TopicList from "../components/TopicList";
 import { allArticles, articleTopic } from "../store/actions/actionArticle";

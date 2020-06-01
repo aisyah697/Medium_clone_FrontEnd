@@ -1,8 +1,7 @@
-import React, { Component, useState, handleShow } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -20,17 +19,15 @@ const NavLandingPage = (props) => {
   const handleShowLogin = () => setShowLogin(true);
 
   const postRegister = async () => {
-    await props.doRegister();
-    const is_login = props.dataUser.is_login;
-    if (is_login) {
-      props.history.replace("/");
+    const register = await props.doRegister();
+    if (register) {
+      alert("Register Success");
     }
   };
 
   const postLogin = async () => {
     await props.doLogin();
-    console.log("cek login");
-    const is_login = props.dataUser.is_login;
+    const is_login = localStorage.getItem("is_login");
     if (is_login) {
       props.history.replace("/home");
     }
@@ -40,7 +37,6 @@ const NavLandingPage = (props) => {
     <div>
       <Navbar collapseOnSelect expand="lg" className="navbar">
         <Navbar.Brand
-          href="#home"
           style={{
             fontFamily: "Georgia, Times New Roman, Times, serif",
             fontWeight: "bold",
@@ -64,7 +60,6 @@ const NavLandingPage = (props) => {
           <Nav.Link className="navbar-menu" onClick={handleShowLogin}>
             Sign in
           </Nav.Link>
-
           <Button
             className="btn-get-started"
             variant="success"
@@ -75,7 +70,7 @@ const NavLandingPage = (props) => {
 
           <Modal show={showRegister} onHide={handleCloseRegister}>
             <Modal.Header closeButton></Modal.Header>
-            <Form onSubmit={(e) => e.preventDefault()}>
+            <Form>
               <Container>
                 <Row className="show-grid">
                   <Col xs={1} sm={2} />

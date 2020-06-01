@@ -9,7 +9,6 @@ const EditorsPicks = (props) => {
     articleTitle = articleTitle.replace(/ /gi, "-");
     props.history.replace("/story-detail/" + articleTitle);
   };
-  console.log("cek props buat nama", props);
 
   return (
     <div>

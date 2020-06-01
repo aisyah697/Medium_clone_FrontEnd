@@ -11,6 +11,7 @@ const ListArticle = (props) => {
     articleTitle = articleTitle.replace(/ /gi, "-");
     props.history.replace("/story-detail/" + articleTitle);
   };
+
   return (
     <Fragment>
       <Card className="mb-3">

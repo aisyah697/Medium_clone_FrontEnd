@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { doLogin, getUser, doSignOut } from "../store/actions/actionUser";
-import { getArticleByUser } from "../store/actions/actionArticle";
+import { doLogin, getUser } from "../store/actions/actionUser";
+import { allArticles } from "../store/actions/actionArticle";
 import Navigation from "../components/Navigation";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -10,10 +10,10 @@ import Nav from "react-bootstrap/Nav";
 
 const moment = require("moment");
 
-class Stories extends Component {
+class Drafts extends Component {
   componentDidMount() {
+    this.props.allArticles();
     this.props.getUser();
-    this.props.getArticleByUser();
   }
 
   changeRouter = (articleTitle) => {
@@ -22,17 +22,17 @@ class Stories extends Component {
   };
 
   render() {
+    const articleList = this.props.dataArticle.articleList;
     const dataUser = this.props.dataUser;
-    const articleByUser = this.props.dataArticle.articleByUser;
 
     return (
       <div>
         <Fragment>
           <Navigation
             {...this.props}
-            name={dataUser.full_name}
-            avatar={dataUser.avatar}
-            email={dataUser.email}
+            name={this.props.dataUser.full_name}
+            avatar={this.props.dataUser.avatar}
+            email={this.props.dataUser.email}
           />
           <section className="stories-list-section">
             <div className="card-stories">
@@ -50,7 +50,7 @@ class Stories extends Component {
             <div>
               <Card>
                 <Card.Header className="header-stories-menu">
-                  <Nav variant="tabs" defaultActiveKey="/me/stories/public">
+                  <Nav variant="tabs" defaultActiveKey="/me/stories/drafts">
                     <Nav.Item>
                       <Nav.Link
                         className="link-stories"
@@ -69,35 +69,6 @@ class Stories extends Component {
                     </Nav.Item>
                   </Nav>
                 </Card.Header>
-
-                {articleByUser
-                  ? articleByUser.map((item) => (
-                      <div>
-                        <Card.Body className="card-body-stories">
-                          <Link
-                            className="little-title-home"
-                            onClick={() =>
-                              this.changeRouter(`${this.props.title}`)
-                            }
-                          >
-                            <Card.Title className="title-stories">
-                              {item.title}
-                            </Card.Title>
-                          </Link>
-                          <Card.Text className="sliced-text-stories">
-                            With supporting text below as a natural lead-in to
-                            additional content.
-                          </Card.Text>
-                          <Card.Text className="pubdate-stories">
-                            Published on{" "}
-                            {moment(item.created_at).format("MMM DD")} &middot;
-                            1 min read{" "}
-                          </Card.Text>
-                        </Card.Body>
-                        <hr className="mt-0" />
-                      </div>
-                    ))
-                  : null}
               </Card>
             </div>
           </section>
@@ -115,8 +86,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   doLogin,
   getUser,
-  getArticleByUser,
-  doSignOut,
+  allArticles,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Stories);
+export default connect(mapStateToProps, mapDispatchToProps)(Drafts);
